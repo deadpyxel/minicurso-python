@@ -7,34 +7,31 @@ start_url = 'https://www.olx.com.br/imoveis?q=Presidente+Prudente'
 
 # requisitamos a página web
 page = requests.get(start_url).text
-
 soup = BeautifulSoup(page, 'html.parser')
 
 # titulo do anuncio
-title_box = soup.find('h2', attrs={'class': 'OLXad-list-title'})
-title = title_box.text.strip() # remoção de tags HTML
-print(title)
-
+title_box = soup.find_all('h2', attrs={'class': 'OLXad-list-title'})
 # Preco
-price_box = soup.find('p', attrs={'class': 'OLXad-list-price'})
-price = price_box.text.strip() # remoção de tags HTML
-print(price)
-
+price_box = soup.find_all('p', attrs={'class': 'OLXad-list-price'})
 # Detalhes
-details_box = soup.find('p', attrs={'class': 'text detail-specific'})
-details = details_box.text.strip() # remoção de tags HTML
-print(details)
-
-# Regiao
-region_box = soup.find('p', attrs={'class': 'text detail-region'})
-region = region_box.text.strip() # remoção de tags HTML
-print(region)
-
+details_box = soup.find_all('p', attrs={'class': 'text detail-specific'})
 # categoria
-category_box = soup.find('p', attrs={'class': 'text detail-category'})
-category = category_box.text.strip() # remoção de tags HTML
-print(category)
+category_box = soup.find_all('p', attrs={'class': 'text detail-category'})
 
-with open('houses.csv', 'a') as csv_file:
-    csv_writer = csv.writer(csv_file)
-    csv_writer.writerow([title, price, details, region, category])
+for title_ele, price_ele, details_ele, cat_ele in zip(
+        title_box, price_box, details_box, category_box):
+    # remove html tags
+    title = title_ele.text.strip()
+    price = price_ele.text.strip()
+    detail = details_ele.text.strip()
+    detail = ''.join(detail.split('\n'))
+    detail = ''.join(detail.split('\t'))
+    category = cat_ele.text.strip()
+    category = ''.join(category.split('\n'))
+    category = ''.join(category.split('\t'))
+    print(
+        f'Title: {title}, Price: {price}, Details: {detail}, Cat: {category}'
+    )
+    with open('house_list.csv', 'a') as f:
+        csv_writer = csv.writer(f)
+        csv_writer.writerow([title, price, detail, category])
