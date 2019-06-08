@@ -1,5 +1,9 @@
 # Minicurso Python
 
+## Apresentação
+
+Os slides da apresentação podem ser encontrados [aqui](https://slides.com/robsoncruz/pythondata/fullscreen).
+
 ## Instruções para o projeto
 
 1) Criar uma virtualenv
@@ -19,4 +23,3 @@ pip install -r requirements.txt
 ```bash
 jupyter notebook
 ```
-
