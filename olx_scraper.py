@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import csv
 
 # URL inicial apra o nosso crawler
 start_url = 'https://www.olx.com.br/imoveis?q=Presidente+Prudente'
@@ -15,21 +16,25 @@ title = title_box.text.strip() # remoção de tags HTML
 print(title)
 
 # Preco
-title_box = soup.find('p', attrs={'class': 'OLXad-list-price'})
-title = title_box.text.strip() # remoção de tags HTML
-print(title)
+price_box = soup.find('p', attrs={'class': 'OLXad-list-price'})
+price = price_box.text.strip() # remoção de tags HTML
+print(price)
 
 # Detalhes
-title_box = soup.find('p', attrs={'class': 'text detail-specific'})
-title = title_box.text.strip() # remoção de tags HTML
-print(title)
+details_box = soup.find('p', attrs={'class': 'text detail-specific'})
+details = details_box.text.strip() # remoção de tags HTML
+print(details)
 
 # Regiao
-title_box = soup.find('p', attrs={'class': 'text detail-region'})
-title = title_box.text.strip() # remoção de tags HTML
-print(title)
+region_box = soup.find('p', attrs={'class': 'text detail-region'})
+region = region_box.text.strip() # remoção de tags HTML
+print(region)
 
 # categoria
-title_box = soup.find('p', attrs={'class': 'text detail-category'})
-title = title_box.text.strip() # remoção de tags HTML
-print(title)
+category_box = soup.find('p', attrs={'class': 'text detail-category'})
+category = category_box.text.strip() # remoção de tags HTML
+print(category)
+
+with open('houses.csv', 'a') as csv_file:
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerow([title, price, details, region, category])
